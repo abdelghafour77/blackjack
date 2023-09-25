@@ -52,6 +52,7 @@ public class GameService {
         return newDeck;
     }
 
+
     public static Object[] extractRandomCard(int[][] deck) {
         int index = (int) (Math.random() * deck.length);
         return extractCardByIndex(deck, index);
@@ -102,7 +103,6 @@ public class GameService {
     // get the first number of cards from the deck
         Object[] newDeck = new Object[2];
         int[][] newDeck2 = new int[number][deck[0].length];
-        // check this later to see if it works
         System.arraycopy(deck, 0, newDeck2, 0, number);
         newDeck[0] = newDeck2;
 
@@ -116,5 +116,7 @@ public class GameService {
         return newDeck;
 
     }
+
+
 
 }
