@@ -1,4 +1,4 @@
-package service;
+package Service;
 
 import java.util.Arrays;
 import java.util.stream.IntStream;
@@ -34,7 +34,7 @@ public class GameService {
 
     public static Object[] extractCardByIndex(int[][] deck, int index) {
         if (index < 0 || index >= deck.length) {
-            // Handle invalid index here, such as returning an error or throwing an exception
+            // Handle invalid index here
             // ...
             return null;
         }
@@ -51,7 +51,6 @@ public class GameService {
         newDeck[1] = newDeck2;
         return newDeck;
     }
-
 
     public static Object[] extractRandomCard(int[][] deck) {
         int index = (int) (Math.random() * deck.length);
@@ -77,6 +76,7 @@ public class GameService {
         for (int i = 0; i < deck.length; i++) {
             int minIndex = findMinRankCardIndex(tmpDeck);
             Object[] card = extractCardByIndex(tmpDeck, minIndex);
+            assert card != null;
             sortedDeck[i] = (int[]) card[0];
             tmpDeck = (int[][]) card[1];
         }
@@ -95,10 +95,26 @@ public class GameService {
                 minIndex = i;
             }
         }
-
         return minIndex;
     }
-    
 
+    private static Object[] drawFirstCards(int[][] deck, int number) {
+    // get the first number of cards from the deck
+        Object[] newDeck = new Object[2];
+        int[][] newDeck2 = new int[number][deck[0].length];
+        // check this later to see if it works
+        System.arraycopy(deck, 0, newDeck2, 0, number);
+        newDeck[0] = newDeck2;
+
+        int[][] newDeck3 = new int[deck.length - number][deck[0].length];
+        for (int i = 0, newIndex = 0; i < deck.length; i++) {
+            if (i >= number) {
+                newDeck3[newIndex++] = deck[i];
+            }
+        }
+        newDeck[1] = newDeck3;
+        return newDeck;
+
+    }
 
 }
