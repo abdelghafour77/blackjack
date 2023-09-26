@@ -99,8 +99,10 @@ public class GameService {
         return minIndex;
     }
 
+// TODO: change type of return value to HashMap
+
     private static Object[] drawFirstCards(int[][] deck, int number) {
-    // get the first number of cards from the deck
+        // get the first number of cards from the deck
         Object[] newDeck = new Object[2];
         int[][] newDeck2 = new int[number][deck[0].length];
         System.arraycopy(deck, 0, newDeck2, 0, number);
@@ -116,7 +118,6 @@ public class GameService {
         return newDeck;
 
     }
-
 
 
 }
