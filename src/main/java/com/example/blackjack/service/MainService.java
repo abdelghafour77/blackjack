@@ -26,9 +26,21 @@ public class MainService {
     }
 
     public static int[][] createDeck() {
-        return IntStream.range(0, RANKS.length * SUITS.length)// 0 to 52
-                .mapToObj(index -> new int[]{RANKS[index % RANKS.length], SUITS[index / RANKS.length]})
-                .toArray(int[][]::new);
+        int[][] deck = new int[RANKS.length * SUITS.length][2];
+        int cardIndex = 0;
+
+        for (int suit : SUITS) {
+            for (int rank : RANKS) {
+                deck[cardIndex][0] = rank;
+                deck[cardIndex][1] = suit;
+                cardIndex++;
+            }
+        }
+
+        return deck;
+       // return IntStream.range(0, RANKS.length * SUITS.length)// 0 to 52
+       //         .mapToObj(index -> new int[]{RANKS[index % RANKS.length], SUITS[index / RANKS.length]})
+       //         .toArray(int[][]::new);
     }
 
     public static Object[] extractCardByIndex(int[][] deck, int index) {

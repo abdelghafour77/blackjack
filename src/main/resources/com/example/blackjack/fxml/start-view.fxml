@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox id="start-bg" alignment="TOP_CENTER" prefHeight="320.0" prefWidth="560.0" spacing="20.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.blackjack.controller.MainController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+
+    <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+        <image>
+         <Image url="@../images/logo.png" />
+        </image>
+    </ImageView>
+     <Button id="start-btn" onAction="#gameView" styleClass="start-btn" stylesheets="@../css/style.css" text="Start" />
+</VBox>

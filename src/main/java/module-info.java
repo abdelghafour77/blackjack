@@ -10,6 +10,7 @@ module com.example.blackjack {
     requires org.kordamp.bootstrapfx.core;
    // requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires com.jfoenix;
 
     opens com.example.blackjack to javafx.fxml;
     exports com.example.blackjack;

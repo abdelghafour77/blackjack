@@ -1,0 +1,27 @@
+#main-bg {
+    -fx-background-image: url('../images/bg.jpeg');
+    -fx-background-size: cover;
+}
+
+#start-bg{
+    -fx-background-image: url('../images/bg-start.jpg');
+    -fx-background-size: cover;
+}
+.title{
+    -fx-font-family: "Arial Black";
+    -fx-font-size: 50px;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.5) , 0,0,0,1 );
+}
+.start-btn{
+    -fx-font-family: "Arial Black";
+    -fx-font-size: 30px;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.5) , 0,0,0,1 );
+    -fx-background-color: transparent;
+}
+.start-btn:hover{
+    -fx-text-fill: #afafaf;
+}
