@@ -1,20 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="main-bg" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="560.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.blackjack.controller.MainController">
-    <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <Menu mnemonicParsing="false" text="File">
-            <MenuItem mnemonicParsing="false" text="Close" />
-        </Menu>
-        <Menu mnemonicParsing="false" text="Edit">
-            <MenuItem mnemonicParsing="false" text="Delete" />
-        </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-            <MenuItem mnemonicParsing="false" text="About" />
-        </Menu>
-    </MenuBar>
-    <JFXButton id="card" fx:id="card" accessibleText="card" buttonType="RAISED" layoutX="56.0" layoutY="122.0" style="-fx-background-color: ffffff;" text="hello" />
+<AnchorPane id="main-bg" maxHeight="Infinity" maxWidth="Infinity" minHeight="1080" minWidth="1920" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+    <ImageView fx:id="back_card" fitHeight="150.0" fitWidth="200.0" layoutX="628.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@../images/cards/1-4.png" />
+        </image>
+        <image>
+            <Image url="@../images/cards/1-4.png" />
+        </image>
+        <cursor>
+            <Cursor fx:constant="HAND" />
+        </cursor>
+    </ImageView>
+    <Button layoutX="151.0" layoutY="279.0" mnemonicParsing="false" prefHeight="80.0" prefWidth="80.0" text="STAND">
+      <styleClass>
+         <String fx:value="stand" />
+         <String fx:value="btn" />
+      </styleClass></Button>
+    <Button layoutX="652.0" layoutY="279.0" mnemonicParsing="false" prefHeight="80.0" prefWidth="80.0" text="HIT">
+      <styleClass>
+         <String fx:value="hit" />
+         <String fx:value="btn" />
+      </styleClass></Button>
 </AnchorPane>
