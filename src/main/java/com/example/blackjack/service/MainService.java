@@ -1,6 +1,5 @@
 package com.example.blackjack.service;
 import java.util.Arrays;
-import java.util.stream.IntStream;
 
 public class MainService {
     private static final int[] RANKS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
@@ -112,7 +111,7 @@ public class MainService {
 
 // TODO: change type of return value to HashMap
 
-    private static Object[] drawFirstCards(int[][] deck, int number) {
+    public static Object[] drawFirstCards(int[][] deck, int number) {
         // get the first number of cards from the deck
         Object[] newDeck = new Object[2];
         int[][] newDeck2 = new int[number][deck[0].length];
