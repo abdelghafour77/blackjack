@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane id="main-bg" prefHeight="450" prefWidth="800" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane id="main-bg" prefHeight="450" prefWidth="800" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
 
     <right>
         <StackPane fx:id="cards" layoutX="25.0" prefHeight="150.0" prefWidth="200.0">
@@ -15,29 +13,44 @@
         </StackPane>
     </right>
     <top>
-        <StackPane fx:id="dealerCards" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+
+        <StackPane fx:id="dealerCards" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets right="230.0" />
+            </BorderPane.margin>
+            <children>
+
+            </children>
+        </StackPane>
     </top>
     <bottom>
-        <StackPane fx:id="playerCards" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin></StackPane>
+        <StackPane fx:id="playerCards" alignment="CENTER_LEFT" depthTest="ENABLE" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets left="230.0" />
+            </BorderPane.margin>
+            <children>
+
+            </children>
+        </StackPane>
     </bottom>
     <left>
         <AnchorPane prefHeight="158.0" prefWidth="150.0" BorderPane.alignment="CENTER">
-
+            <children>
+                <Text fx:id="playerScore" fill="WHITE" layoutX="39.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your score : 0" />
+                <Text fx:id="dealerScore" fill="WHITE" layoutX="27.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score of dealer : 0" />
+            </children>
         </AnchorPane>
     </left>
     <center>
         <AnchorPane prefHeight="129.0" prefWidth="341.0" BorderPane.alignment="CENTER">
             <HBox alignment="CENTER" layoutX="105.0" layoutY="29.0" prefHeight="91.0" prefWidth="238.0">
                 <children>
-                    <Button mnemonicParsing="false" onMouseClicked="#hit" prefHeight="50.0" prefWidth="75.0" styleClass="btn" text="HIT">
+                    <Button fx:id="hitButton" mnemonicParsing="false" onMouseClicked="#hit" prefHeight="50.0" prefWidth="75.0" styleClass="btn" text="HIT">
                         <HBox.margin>
                             <Insets right="10.0" />
                         </HBox.margin>
                     </Button>
-                    <Button mnemonicParsing="false" onMouseClicked="#stand" prefHeight="50.0" prefWidth="75.0" styleClass="btn" text="STAND">
+                    <Button fx:id="standButton" mnemonicParsing="false" onMouseClicked="#stand" prefHeight="50.0" prefWidth="75.0" styleClass="btn" text="STAND">
                         <HBox.margin>
                             <Insets left="10.0" />
                         </HBox.margin>

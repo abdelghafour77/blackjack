@@ -6,6 +6,7 @@ import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -14,6 +15,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -35,6 +37,18 @@ public class MainController {
     @FXML
     StackPane playerCards;
 
+    @FXML
+    Text dealerScore;
+
+    @FXML
+    Text playerScore;
+
+    @FXML
+    Button hitButton;
+
+    @FXML
+    Button standButton;
+
     private int[][] deck = new int[0][0];
     private int[][] dealerCardsArray = new int[0][0];
     private int[][] playerCardsArray = new int[0][0];
@@ -52,7 +66,9 @@ public class MainController {
 
         gameViewScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/example/blackjack/css/style.css")).toExternalForm());
         primaryStage.show();
+        disableButtons(true);
         animationShufflingCards();
+
 
     }
 
@@ -84,12 +100,12 @@ public class MainController {
 
         transition.setToX(-65);
         transition.setAutoReverse(true);
-        transition.setCycleCount(20);
+        transition.setCycleCount(10);
         Timeline toBackTimeline = new Timeline(new KeyFrame(Duration.seconds(0.3), event -> {
             cards.getChildren().get(0).toBack();
             cards.getChildren().get(2).toFront();
         }));
-        toBackTimeline.setCycleCount(20);
+        toBackTimeline.setCycleCount(10);
         toBackTimeline.play();
 
 
@@ -102,14 +118,15 @@ public class MainController {
         FileInputStream stream = new FileInputStream("src/main/resources/com/example/blackjack/images/cards/" + file + ".png");
         Image image = new Image(stream);
         ImageView card = new ImageView(image);
-        card.setFitHeight(150);
-        card.setFitWidth(100);
+        card.setFitHeight(130);
+        card.setFitWidth(90);
         return card;
     }
 
     public void dealFirstCards() {
-        PauseTransition pause = new PauseTransition(Duration.seconds(6));
+        PauseTransition pause = new PauseTransition(Duration.seconds(3));
         pause.setOnFinished(event -> {
+            disableButtons(false);
             deck = MainService.createDeck();
             deck = MainService.shuffleDeck(deck);
 
@@ -120,16 +137,26 @@ public class MainController {
             HashMap<String, int[][]> playerDraw = MainService.drawFirstCards(deck, 2);
             deck = playerDraw.get("deck");
             playerCardsArray = playerDraw.get("cards");
+            try {
+                setCardsToTable(dealerCardsArray[0][0] + "-" + dealerCardsArray[0][1], 50, 25, true);
+                setCardsToTable("card_back", 50, 25, true);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
 
-
-            for (int i = 0; i < dealerCardsArray.length; i++) {
+            for (int[] ints : playerCardsArray) {
                 try {
-                    setCardsToTable(dealerCardsArray[i][0] + "-" + dealerCardsArray[i][1], 50, 25, true);
-                    setCardsToTable(playerCardsArray[i][0] + "-" + playerCardsArray[i][1], 50, 0, false);
+                    setCardsToTable(ints[0] + "-" + ints[1], 50, 0, false);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
             }
+            playerScore.setText("Your score : " + String.valueOf(getHandValue(playerCardsArray)));
+            int scoreOfDealer = dealerCardsArray[0][0];
+            if (scoreOfDealer > 10) {
+                scoreOfDealer = 10;
+            }
+            dealerScore.setText("Score of dealer : " + scoreOfDealer);
         });
         pause.play();
     }
@@ -175,15 +202,107 @@ public class MainController {
         }
         System.out.println("size of array : " + playerCardsArray.length);
 
+        System.out.println("Player hand value: " + getHandValue(playerCardsArray));
+
+//        change dealerScore and playerScore
+        int playerScoreTotal = getHandValue(playerCardsArray);
+        if (playerScoreTotal > 21) {
+            playerScore.setText("Your score : " + String.valueOf(playerScoreTotal) + " - You lose");
+            stand(event);
+        } else {
+            playerScore.setText("Your score : " + String.valueOf(playerScoreTotal));
+        }
 
     }
 
     @FXML
     public void stand(MouseEvent event) {
-        System.out.println("Stand");
+        disableButtons(true);
+        // Clear dealerCards
+        dealerCards.getChildren().clear();
+        for (int[] ints : dealerCardsArray) {
+            try {
+                setCardsToTable(ints[0] + "-" + ints[1], 50, 25, true);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        int dealerScoreTotal = getHandValue(dealerCardsArray);
+        if (dealerScoreTotal > 21) {
+            dealerScore.setText("Score of dealer : " + String.valueOf(dealerScoreTotal) + " - dealer lose");
+        } else {
+            dealerScore.setText("Score of dealer : " + String.valueOf(dealerScoreTotal));
+            // Create a PauseTransition with a 2-second duration
+            PauseTransition pause = new PauseTransition(Duration.seconds(2));
+            pause.setOnFinished(e -> {
+                drawDealerCard(); // Call a method to draw a dealer card after the pause
+            });
+            pause.play();
+        }
+    }
 
+    private void drawDealerCard() {
+        int dealerScoreTotal = getHandValue(dealerCardsArray);
+        if (dealerScoreTotal < 17) {
+            HashMap<String, int[][]> dealerDraw = MainService.drawFirstCards(deck, 1);
+            deck = dealerDraw.get("deck");
+            int[][] newDealerCardsArray = new int[dealerCardsArray.length + 1][2];
+            System.arraycopy(dealerCardsArray, 0, newDealerCardsArray, 0, dealerCardsArray.length);
+            newDealerCardsArray[newDealerCardsArray.length - 1] = dealerDraw.get("cards")[0];
+            dealerCardsArray = newDealerCardsArray;
+
+            try {
+                setCardsToTable(dealerCardsArray[dealerCardsArray.length - 1][0] + "-" + dealerCardsArray[dealerCardsArray.length - 1][1], 50, 25, true);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            dealerScoreTotal = getHandValue(dealerCardsArray);
+            int playerScoreTotal = getHandValue(playerCardsArray);
+
+            if (dealerScoreTotal == playerScoreTotal) {
+                dealerScore.setText("Score of dealer : " + String.valueOf(dealerScoreTotal));
+                playerScore.setText("Your score : " + String.valueOf(playerScoreTotal));
+            } else if (dealerScoreTotal > 21) {
+                dealerScore.setText("Score of dealer : " + String.valueOf(dealerScoreTotal) + " - dealer lose");
+            } else {
+                if (dealerScoreTotal > playerScoreTotal) {
+                    dealerScore.setText("Score of dealer : " + String.valueOf(dealerScoreTotal) + " - dealer win");
+                } else {
+                    dealerScore.setText("Score of dealer : " + String.valueOf(dealerScoreTotal));
+                }
+            }
+        } else {
+            // If the dealer doesn't draw more cards, end the game logic here.
+            // You may want to enable buttons or perform other actions.
+        }
     }
 
 
+    public int getHandValue(int[][] hand) {
+        int handValue = 0;
+        int aceCount = 0;
+        for (int[] ints : hand) {
+            int rank = ints[0];
+            if (rank == 1) {
+                aceCount++;
+                handValue += 11;
+            } else if (rank > 10) {
+                handValue += 10;
+            } else {
+                handValue += rank;
+            }
+        }
+        while (handValue > 21 && aceCount > 0) {
+            handValue -= 10;
+            aceCount--;
+        }
+        return handValue;
+    }
+
+    public void disableButtons(boolean disable) {
+        hitButton.setDisable(disable);
+        standButton.setDisable(disable);
+    }
 
 }

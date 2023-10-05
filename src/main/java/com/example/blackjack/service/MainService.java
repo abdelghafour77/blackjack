@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class MainService {
-    private static final int[] RANKS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+    private static final int[] RANKS = {1, 2, 3, 4, 5, 6};
     private static final int[] SUITS = {1, 2, 3, 4}; // Hearts, Diamonds, Clubs, Spades
 
     public static void main(String[] args) {
@@ -131,16 +131,4 @@ public class MainService {
         return result;
     }
 
-//    public static HashMap<String, int[][]> addCardToHand(HashMap<String, int[][]> hand, int[][] card) {
-//        HashMap<String, int[][]> result = new HashMap<>();
-//
-//        int[][] newHand = new int[hand.get("drawnCards").length + 1][hand.get("drawnCards")[0].length];
-//        System.arraycopy(hand.get("drawnCards"), 0, newHand, 0, hand.get("drawnCards").length);
-//        newHand[hand.get("drawnCards").length] = card[0];
-//
-//        result.put("drawnCards", newHand);
-//        result.put("newDeck", hand.get("newDeck"));
-//
-//        return result;
-//    }
 }
