@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 
-<BorderPane id="main-bg" prefHeight="450" prefWidth="800" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane id="main-bg" prefHeight="450" prefWidth="800" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
 
     <right>
         <StackPane fx:id="cards" layoutX="25.0" prefHeight="150.0" prefWidth="200.0">
@@ -30,20 +32,12 @@
         <AnchorPane prefHeight="129.0" prefWidth="341.0" BorderPane.alignment="CENTER">
             <HBox alignment="CENTER" layoutX="105.0" layoutY="29.0" prefHeight="91.0" prefWidth="238.0">
                 <children>
-                    <Button mnemonicParsing="false" prefHeight="75.0" prefWidth="75.0" text="HIT">
-                        <styleClass>
-                            <String fx:value="btn" />
-                            <String fx:value="hit" />
-                        </styleClass>
+                    <Button mnemonicParsing="false" onMouseClicked="#hit" prefHeight="50.0" prefWidth="75.0" styleClass="btn" text="HIT">
                         <HBox.margin>
                             <Insets right="10.0" />
                         </HBox.margin>
                     </Button>
-                    <Button mnemonicParsing="false" prefHeight="75.0" prefWidth="75.0" text="STAND">
-                        <styleClass>
-                            <String fx:value="btn" />
-                            <String fx:value="stand" />
-                        </styleClass>
+                    <Button mnemonicParsing="false" onMouseClicked="#stand" prefHeight="50.0" prefWidth="75.0" styleClass="btn" text="STAND">
                         <HBox.margin>
                             <Insets left="10.0" />
                         </HBox.margin>

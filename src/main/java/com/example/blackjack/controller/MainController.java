@@ -6,6 +6,7 @@ import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,10 +16,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Objects;
 
 
@@ -27,10 +29,15 @@ public class MainController {
     @FXML
     private StackPane cards;
 
-    @FXML StackPane dealerCards;
+    @FXML
+    StackPane dealerCards;
 
-    @FXML StackPane playerCards;
+    @FXML
+    StackPane playerCards;
 
+    private int[][] deck = new int[0][0];
+    private int[][] dealerCardsArray = new int[0][0];
+    private int[][] playerCardsArray = new int[0][0];
 
     @FXML
     public void gameView(ActionEvent event) throws IOException {
@@ -100,29 +107,25 @@ public class MainController {
         return card;
     }
 
-    public void dealFirstCards(){
-
+    public void dealFirstCards() {
         PauseTransition pause = new PauseTransition(Duration.seconds(6));
         pause.setOnFinished(event -> {
-            int[][] deck = MainService.createDeck();
+            deck = MainService.createDeck();
+            deck = MainService.shuffleDeck(deck);
 
-            deck= MainService.shuffleDeck(deck);
+            HashMap<String, int[][]> dealerDraw = MainService.drawFirstCards(deck, 2);
+            deck = dealerDraw.get("deck");
+            dealerCardsArray = dealerDraw.get("cards");
 
-            Object[] card = MainService.drawFirstCards(deck, 2);
-            int[][] dealerCards = (int[][]) card[0];
+            HashMap<String, int[][]> playerDraw = MainService.drawFirstCards(deck, 2);
+            deck = playerDraw.get("deck");
+            playerCardsArray = playerDraw.get("cards");
 
-            deck = (int[][]) card[1];
-            card = MainService.drawFirstCards(deck, 2);
-            int[][] playerCards = (int[][]) card[0];
 
-            System.out.println("The dealer's cards: ");
-            Arrays.stream(dealerCards).map(Arrays::toString).forEach(System.out::println);
-            System.out.println("The player's cards: ");
-            Arrays.stream(playerCards).map(Arrays::toString).forEach(System.out::println);
-            for (int i = 0; i < dealerCards.length; i++) {
+            for (int i = 0; i < dealerCardsArray.length; i++) {
                 try {
-                    setCardsToTable(dealerCards[i][0] + "-" + dealerCards[i][1], 100 + i * 20,25, true);
-                    setCardsToTable(playerCards[i][0] + "-" + playerCards[i][1], 100 + i * 20,0, false);
+                    setCardsToTable(dealerCardsArray[i][0] + "-" + dealerCardsArray[i][1], 50, 25, true);
+                    setCardsToTable(playerCardsArray[i][0] + "-" + playerCardsArray[i][1], 50, 0, false);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -131,19 +134,56 @@ public class MainController {
         pause.play();
     }
 
+
     @FXML
-    private void setCardsToTable(String cardName, int x,int y, Boolean is_dealer) throws FileNotFoundException {
+    private void setCardsToTable(String cardName, int x, int y, Boolean is_dealer) throws FileNotFoundException {
 
         ImageView card = getImageView(cardName);
-        card.setTranslateX(x);
+
         card.setTranslateY(y);
         card.setEffect(new DropShadow());
         if (is_dealer) {
+            card.setTranslateX(x * dealerCards.getChildren().stream().mapToInt(node -> 1).sum());
             dealerCards.getChildren().add(card);
         } else {
+            card.setTranslateX(x * playerCards.getChildren().stream().mapToInt(node -> 1).sum());
             playerCards.getChildren().add(card);
         }
 
     }
+
+    // TODO - Still working on this
+    @FXML
+    public void hit(MouseEvent event) {
+        System.out.println("Hit");
+        try {
+            HashMap<String, int[][]> playerDraw = MainService.drawFirstCards(deck, 1);
+            deck = playerDraw.get("deck");
+            int[][] newPlayerCardsArray = new int[playerCardsArray.length + 1][2];
+            System.arraycopy(playerCardsArray, 0, newPlayerCardsArray, 0, playerCardsArray.length);
+            newPlayerCardsArray[newPlayerCardsArray.length - 1] = playerDraw.get("cards")[0];
+            playerCardsArray = newPlayerCardsArray;
+            setCardsToTable(playerCardsArray[playerCardsArray.length - 1][0] + "-" + playerCardsArray[playerCardsArray.length - 1][1], 50, 0, false);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        // print playerCardsArray
+        System.out.println("Player cards:");
+        for (int[] ints : playerCardsArray) {
+            System.out.println(ints[0] + "-" + ints[1]);
+        }
+        System.out.println("size of array : " + playerCardsArray.length);
+
+
+    }
+
+    @FXML
+    public void stand(MouseEvent event) {
+        System.out.println("Stand");
+
+    }
+
+
 
 }

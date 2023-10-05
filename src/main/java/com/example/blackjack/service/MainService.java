@@ -1,5 +1,7 @@
 package com.example.blackjack.service;
+
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class MainService {
     private static final int[] RANKS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
@@ -37,9 +39,9 @@ public class MainService {
         }
 
         return deck;
-       // return IntStream.range(0, RANKS.length * SUITS.length)// 0 to 52
-       //         .mapToObj(index -> new int[]{RANKS[index % RANKS.length], SUITS[index / RANKS.length]})
-       //         .toArray(int[][]::new);
+        // return IntStream.range(0, RANKS.length * SUITS.length)// 0 to 52
+        //         .mapToObj(index -> new int[]{RANKS[index % RANKS.length], SUITS[index / RANKS.length]})
+        //         .toArray(int[][]::new);
     }
 
     public static Object[] extractCardByIndex(int[][] deck, int index) {
@@ -111,21 +113,34 @@ public class MainService {
 
 // TODO: change type of return value to HashMap
 
-    public static Object[] drawFirstCards(int[][] deck, int number) {
-        // get the first number of cards from the deck
-        Object[] newDeck = new Object[2];
-        int[][] newDeck2 = new int[number][deck[0].length];
-        System.arraycopy(deck, 0, newDeck2, 0, number);
-        newDeck[0] = newDeck2;
+    public static HashMap<String, int[][]> drawFirstCards(int[][] deck, int number) {
+        HashMap<String, int[][]> result = new HashMap<>();
 
-        int[][] newDeck3 = new int[deck.length - number][deck[0].length];
-        for (int i = 0, newIndex = 0; i < deck.length; i++) {
-            if (i >= number) {
-                newDeck3[newIndex++] = deck[i];
-            }
+        int[][] drawnCards = new int[number][deck[0].length];
+        int[][] newDeck = deck.clone();
+
+        for (int i = 0; i < number; i++) {
+            Object[] card = extractRandomCard(newDeck);
+            drawnCards[i] = (int[]) card[0];
+            newDeck = (int[][]) card[1];
         }
-        newDeck[1] = newDeck3;
-        return newDeck;
 
+        result.put("cards", drawnCards);
+        result.put("deck", newDeck);
+
+        return result;
     }
+
+//    public static HashMap<String, int[][]> addCardToHand(HashMap<String, int[][]> hand, int[][] card) {
+//        HashMap<String, int[][]> result = new HashMap<>();
+//
+//        int[][] newHand = new int[hand.get("drawnCards").length + 1][hand.get("drawnCards")[0].length];
+//        System.arraycopy(hand.get("drawnCards"), 0, newHand, 0, hand.get("drawnCards").length);
+//        newHand[hand.get("drawnCards").length] = card[0];
+//
+//        result.put("drawnCards", newHand);
+//        result.put("newDeck", hand.get("newDeck"));
+//
+//        return result;
+//    }
 }
