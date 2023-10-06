@@ -233,17 +233,25 @@ public class MainController {
         } else {
             dealerScore.setText("Score of dealer : " + String.valueOf(dealerScoreTotal));
             // Create a PauseTransition with a 2-second duration
-            PauseTransition pause = new PauseTransition(Duration.seconds(2));
-            pause.setOnFinished(e -> {
-                drawDealerCard(); // Call a method to draw a dealer card after the pause
-            });
-            pause.play();
+//            PauseTransition pause = new PauseTransition(Duration.millis(1500));
+//            while(dealerScoreTotal < 17) {
+//
+//                dealerScoreTotal = getHandValue(dealerCardsArray);
+//                pause.setOnFinished(e -> {
+                    drawDealerCard(); // Call a method to draw a dealer card after the pause
+//                });
+//                pause.play();
+//            }
         }
     }
 
     private void drawDealerCard() {
-        int dealerScoreTotal = getHandValue(dealerCardsArray);
-        if (dealerScoreTotal < 17) {
+
+//        int dealerScoreTotal = getHandValue(dealerCardsArray);
+        PauseTransition pause = new PauseTransition(Duration.millis(1500));
+        while(getHandValue(dealerCardsArray) < 17)  {
+
+            int dealerScoreTotal= getHandValue(dealerCardsArray);
             HashMap<String, int[][]> dealerDraw = MainService.drawFirstCards(deck, 1);
             deck = dealerDraw.get("deck");
             int[][] newDealerCardsArray = new int[dealerCardsArray.length + 1][2];
@@ -272,9 +280,6 @@ public class MainController {
                     dealerScore.setText("Score of dealer : " + String.valueOf(dealerScoreTotal));
                 }
             }
-        } else {
-            // If the dealer doesn't draw more cards, end the game logic here.
-            // You may want to enable buttons or perform other actions.
         }
     }
 
